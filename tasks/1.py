@@ -23,7 +23,7 @@ print(f"File '{VIDEO_NAME}' exists: {os.path.exists(inputPath)}; (path: {inputPa
 # If the input is the camera, pass 0 instead of the video file name
 cap = cv2.VideoCapture(inputPath)
 
-# Check if camera opened successfully
+# Check if file opened successfully
 if (cap.isOpened()== False): 
   print("Error opening video stream or file")
 
