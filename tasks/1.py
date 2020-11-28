@@ -1,18 +1,23 @@
 import numpy
 import cv2
-import os 
+import os
+from pathlib import Path
 
 # CONSTS
 # Relative paths to directories
-INPUT_DIR = '../video/'
+INPUT_DIR = '../input/videos/'
 OUTPUT_DIR = '../output/'
 VIDEO_NAME = '20191119_1241_Cam_1_03_00.avi'
 
-dirname = os.path.dirname(__file__)
-inputPath = os.path.join(dirname, INPUT_DIR + VIDEO_NAME)
-outputDir = os.path.join(dirname, OUTPUT_DIR)
+dirName = os.path.dirname(__file__)
+currentFileName = os.path.splitext(os.path.basename(__file__))[0]
+inputPath = os.path.join(dirName, INPUT_DIR + VIDEO_NAME)
+outputDir = os.path.join(dirName, OUTPUT_DIR + "task_" + currentFileName + '/')
 
-print(f"{VIDEO_NAME} file exists: {os.path.exists(inputPath)}; (path: {inputPath})")
+# Create output dir if it does not exist
+Path(outputDir).mkdir(parents=True, exist_ok=True)
+
+print(f"File '{VIDEO_NAME}' exists: {os.path.exists(inputPath)}; (path: {inputPath})")
 
 # Create a VideoCapture object and read from input file
 # If the input is the camera, pass 0 instead of the video file name
@@ -33,7 +38,7 @@ while(cap.isOpened()):
         cv2.imshow('Frame', frame)
 
         if (i < 50):
-            cv2.imwrite(outputDir + str(i) + '.jpg', frame)
+            cv2.imwrite(outputDir + str(i) + '.jpeg', frame)
 
         # Press Q on keyboard to  exit
         if cv2.waitKey(25) & 0xFF == ord('q'):
