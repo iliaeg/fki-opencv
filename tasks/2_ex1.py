@@ -28,9 +28,14 @@ cap = cv2.VideoCapture(inputPath)
 if (cap.isOpened()== False): 
     print("Error opening video stream or file")
 
-rho = 1 #10/5/1
-theta = 1 #15/5/1
-threshold = 10
+rho = 10 #10/5/1 # 10 - less red lines; 1 - more lines
+theta = 15 #15/5/1 # 15 - no edges; 5 - only vertical edges; 1 - more edges and more angles
+threshold = 15
+# otsuThreshold = cv2.threshold(grayscaleFrame, 127, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
+# (img,127,255,cv.THRESH_TOZERO_INV)
+# );
+highThreshold = 150
+lowThreshold = 50
 
 i = 0
 # Read until video is completed
@@ -45,18 +50,25 @@ while(cap.isOpened()):
             # cv2.imwrite(outputDir + str(i) + '.jpeg', gray_image)
             # contours, hierarchy = cv2.findContours(grayscaleFrame, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
-            edges = cv2.Canny(grayscaleFrame,threshold,threshold*2)
+            # otsuThreshold = cv2.threshold(grayscaleFrame, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
+            # highThreshold = otsuThreshold[0]
+            # lowThreshold = otsuThreshold[0] * 0.5
+
+            edges = cv2.Canny(grayscaleFrame, lowThreshold, highThreshold)#threshold,threshold*2)
             # print(edges)
             drawing = np.zeros(grayscaleFrame.shape,np.uint8)  
             contours,hierarchy = cv2.findContours(edges,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
-            # for cnt in contours:
-            #     x,y,w,h = cv2.boundingRect(cnt)
-            #     cv2.rectangle(grayscaleFrame,(x,y),(x+w,y+h),(0,255,0),2)
-            #     rect = cv2.minAreaRect(cnt)
-            #     box = cv2.cv.BoxPoints(rect)
-            #     box = np.int0(box)
+            for cnt in contours:
+                x,y,w,h = cv2.boundingRect(cnt)
+                cv2.rectangle(grayscaleFrame,(x,y),(x+w,y+h),(0,255,0),2)
+                rect = cv2.minAreaRect(cnt)
+                # box = cv2.BoxPoints(rect)
+                # box = np.int0(box)
 
-            lines = cv2.HoughLines(edges, rho, theta, threshold)#1,np.pi/180,200)#, 
+            cv2.imshow('Frame', grayscaleFrame)
+            cv2.waitKey(0)
+
+            lines = cv2.HoughLines(edges, rho, theta, threshold, min_theta=0, max_theta=90)#1,np.pi/180,200)#, 
 
             for line in lines:
                 # The below for loop runs till r and theta values
