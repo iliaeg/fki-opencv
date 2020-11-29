@@ -3,6 +3,9 @@ input/
 output/
 test/
 
+# vscode config files
+.vscode/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
