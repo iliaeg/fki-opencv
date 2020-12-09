@@ -3,6 +3,12 @@ import cv2
 import os
 from pathlib import Path
 
+import time
+from datetime import datetime
+
+start_time = time.time()
+print(f"Start time: {datetime.fromtimestamp(start_time)}")
+
 def addPath(pathArray, key, dirName):
     pathArray[key] = os.path.join(outputDir, './' + dirName + '/')
     Path(pathArray[key]).mkdir(parents=True, exist_ok=True)
@@ -224,4 +230,7 @@ cap.release()
 # Closes all the frames
 cv2.destroyAllWindows()
 
-print("Done!")
+end_time = time.time()
+print(f"Done!\n" +
+    f"End time: {datetime.fromtimestamp(end_time)}.\n" +
+    f"Total time: {(end_time - start_time) / 60} minutes.")
