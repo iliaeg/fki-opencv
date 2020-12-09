@@ -2,6 +2,8 @@
 input/
 output/
 test/
+tmp/
+temp/
 
 # vscode config files
 .vscode/
