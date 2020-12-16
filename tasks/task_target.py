@@ -80,20 +80,14 @@ while(cap.isOpened()):
     ret, frame = cap.read()
     if ret == True:
 
+        frame = cv2.imread(os.path.join(dirName, "../output/every 10 frame/2300.jpeg"))
+
         # task_target: draw target on frame
         targetedFrame = np.copy(frame)
 
-        target1 = Target2D((frame.shape[1]/2, frame.shape[0]/2), 0, 50)
-        target1.PrepareModel(mdlVertex)
-        target1.DrawTarget(targetedFrame)
-
-        target2 = Target2D((frame.shape[1]/4, frame.shape[0]/4), 5, 100)
+        target2 = Target2D((433, 240), 0, 51)
         target2.PrepareModel(mdlVertex)
         target2.DrawTarget(targetedFrame)
-
-        target3 = Target2D((frame.shape[1]*3/4, frame.shape[0]*3/4), -10, 70)
-        target3.PrepareModel(mdlVertex)
-        target3.DrawTarget(targetedFrame)
 
         cv2.imshow('targetedFrame', targetedFrame)
         cv2.waitKey(0)
